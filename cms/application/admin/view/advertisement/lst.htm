@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+	<link href="__ADMIN__/style/jquery-ui.min.css" rel="stylesheet">
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+
+	<!-- /头部 -->
+
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li class="active">配置列表</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+
+<button type="button" tooltip="添加用户" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('add')}'"> <i class="fa fa-plus"></i> Add
+</button>
+<button type="button" tooltip="保存排序" class="btn btn-sm btn-azure btn-addon" onClick="savesort()">  保存排序
+</button>
+<div  class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center" width="6%">ID</th>
+                                <th class="text-center" width="18%">广告名称</th>
+                                <th class="text-center" width="18%">关闭该广告位下的其他广告</th>
+								<th class="text-center" width="18%">所在广告位</th>
+                                <th class="text-center" width="10%">广告开启状态</th>
+                                <th class="text-center" width="12%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="row"  class="sortable">
+							{volist name="lstRes" id="lst"}
+                            <tr id="tr_{$lst.id}"   class="ui-state-default">
+
+                                <td align="center"  width="6%" class="m_ttitle" style="cursor:move;background:#00FFFF;"><i style="float:left;cursor:move" class="fa fa-arrows-v"></i>{$lst.id}</td>
+                                <td align="center"  width="18%">{$lst.name}</td>
+                                <td align="center" width="18%">
+									<a href="javascript:;" staticid="{$lst.id}" adid="{$lst.adid}" onclick="updateAllStatic(this)" class="btn btn-success shiny">关闭其他广告</a>
+								</td>
+								<td align="center"  width="18%">
+									{if condition="$lst.bname"}
+										{$lst.bname}
+									{else /}
+										未选择广告位
+									{/if}
+
+								</td>
+                                <td align="center"  width="10%">
+
+									<label style="cursor:pointer;">
+                                        <input adid="{$lst.adid}" staticid="{$lst.id}" static="{$lst.static}" oneid="{$lst.id}" class="checkbox-slider colored-blue" {if condition="$lst.static eq 1"} checked="checked" {/if} onclick="UpdateStatic(this);" type="checkbox">
+                                        <span class="text"></span>
+                                    </label>
+
+
+								</td>
+                                <td  align="center"  width="12%">
+                                    <a href="{:url('edit',['id'=>$lst.id])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+
+                                    <a confid="{$lst.id}" onclick="changedel(this);" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> ajax删除
+                                    </a>
+                                </td>
+                            </tr>
+							{/volist}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div>			</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+	<script src="__ADMIN__/style/jquery-ui.min.js"></script>
+		    <script src="__ADMIN__/plus/layer/layer.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <script type="text/javascript">
+	$(function() {
+		// 	自定义排序
+    	$( ".sortable" ).sortable({
+			connectWith: ".column",
+         	handle: ".m_ttitle",
+         	placeholder: "portlet-placeholder ui-corner-all"
+    	});
+    	$( ".sortable" ).disableSelection();
+
+
+  	});
+	function savesort(){
+		var save=[];
+		$(".m_ttitle").each(function(){
+		  save.push($(this).text());
+
+	    });
+		var arr = save.join("-");
+		$.ajax({
+			type:"post",
+			dataType:"json",
+			data:{sort:arr},
+			url:"{:url('sort')}",
+			success:function(data){
+				layer.msg('排序成功', {icon: 1});
+			},
+			beforeSend:function(){
+				layer.load(0, {time: 2*1000});
+			}
+		});
+		//alert(arr);
+		// var arr=jQuery.parseJSON(save);
+		// alert(arr);
+	}
+
+
+
+
+    function changedel(o){
+        if(confirm("确定删除数据")){
+            var confid=$(o).attr("confid");
+            $.ajax({
+                type:"post",
+                dataType:"json",
+                data:{id:confid},
+                url:"{:url('del')}",
+                success:function(data){
+                    if(data==1){
+                        // $("#row").load("{:url('conf/lst')} #row");
+                        $("#tr_"+confid).remove();
+                    }
+                    if(data==0){
+                        alert("删除失败");
+                    }
+                },
+                error:function(){
+                    alert("删除失败");
+                },
+            //     complete: function () {
+            //         $("#row").load("{:url('conf/lst')} #row tr");
+            //         //window.location.reload();
+            //     },
+
+
+            });
+        }
+    }
+	//修改启动状态
+	function UpdateStatic(o){
+		var id=$(o).attr("oneid");
+		var isCheck=$(o).is(":checked");
+
+		$.ajax({
+			type:"Post",
+			dataType:"json",
+			data:{id:id},
+			url:"{:url('Advertisement/updateStatic')}",
+			success:function(data){
+				// // $('input[adid="'+adid+'"]').prop('checked',false);
+				// if(isCheck){
+				// 	$(o).prop('checked',false);
+				// }else{
+				// 	$(o).prop('checked',true);
+				// }
+			},
+			error:function(){
+				if(isCheck){
+					$(o).prop('checked',true);
+				}else{
+					$(o).prop('checked',false);
+				}
+			}
+
+		});
+	}
+
+	//修改该广告位下所有广告的开启状态
+	function updateAllStatic(o){
+		var id=$(o).attr('staticid');
+		var adid=$(o).attr('adid');
+		$.ajax({
+			type:"post",
+			dataType:"json",
+			data:{id:id,adid:adid},
+			url:"{:url('Advertisement/updateAllStatic')}",
+			success:function(data){
+
+				$('input[adid="'+adid+'"][staticid!="'+id+'"]').prop('checked',false);
+			},
+		});
+	}
+    </script>
+
+
+</body></html>

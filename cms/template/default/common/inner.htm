@@ -1,0 +1,34 @@
+ <div id="a1portalSkin_headerAreaA" class="header"> <a name="31437" id="31437"></a>
+<div class="module-default">
+<div class="module-inner">
+<div id="a1portalSkin_ctr8920789207_mainArea" class="module-content">  
+<div class="slideshow carousel clearfix" style="height:550px; overflow:hidden;">
+<div id="carousel-89207">
+
+{volist name="inner" id="vo"}
+<div class="carousel-item">
+<div class="carousel-img"><a href="{if condition='$vo.link'}{$vo.link}{else /}javascript:;{/if}" target=""><img src="__AD__{$vo.img}" height="550" alt="幻灯{$i}"/></a></div>
+</div>
+{/volist}
+
+</div>
+<div class="carousel-btn carousel-btn-fixed" id="carousel-page-89207"></div>
+</div>
+<script type="text/javascript">
+ 
+ $(window).bind("load resize",function(){
+  $("#carousel-89207").carouFredSel({
+   width       : '100%',
+   items  : { visible : 1 },
+   auto     : { pauseOnHover: true, timeoutDuration:5000 },
+   swipe     : { onTouch:true, onMouse:true },
+   pagination  : "#carousel-page-89207"
+   //prev   : { button:"#carousel-prev-89207"},
+   //next   : { button:"#carousel-next-89207"},
+   //scroll   : { fx : "crossfade" }
+  });
+ });
+</script>  </div>
+</div>
+</div>
+</div>

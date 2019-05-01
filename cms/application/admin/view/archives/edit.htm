@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html><head>
+        <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    
+    <link href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+
+
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <script src="__ADMIN__/style/summernote.js"></script>
+
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+  
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+
+    <script src="__ADMIN__/plus/layer/layer.js"></script>
+
+    <script type="text/javascript" src="__ADMIN__/plus/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+    <!-- 头部 -->
+    {include file="common/top"}
+
+    <!-- /头部 -->
+    
+    <div class="main-container container-fluid">
+        <div class="page-container">
+                        <!-- Page Sidebar -->
+          {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li>
+                        <a href="{:url('archives/lst')}">文章列表</a>
+                    </li>
+                                        <li class="active">添加文章</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">修改文章</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" action="" enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="id" value="{$archives.id}">
+                        <input type="hidden" name="model_id" value="{$archives.model_id}">
+                         <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">所属栏目</label>
+                            <div class="col-sm-6">       
+                                    
+                                    <span class="form-control">{$archives.catename} </span>
+                                    
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">所属模型</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="model_id" placeholder="" name="model_id" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div> -->
+                       
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">文章标题</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="title" placeholder="" value="{$archives.title}" name="title" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">关键词</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control" style="min-height: 60px;" name="keywords">{$archives.keywords}</textarea>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>  
+                        <!-- 1文本输入，2单选，3多选，4下拉菜单，5文本域，6附件 7浮点，8整型，9长文本 -->
+                        <div class="form-group">
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">描述</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control" style="min-height: 60px;" name="description">{$archives.description}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">作者</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="writer" placeholder="" name="writer" required="" value="{$archives.writer}" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">来源</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="source" placeholder="" name="source" value="{$archives.source}" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">缩略图</label>
+                            <div class="col-xs-4">
+                                        <label style="float: left;">
+                                            <!-- <div id="myId" class="dropzone"></div> -->
+                                            <span id="uploadify"></span>
+                                            <div class="col-xs-4"  id="cateimg">
+                                                {if condition="$archives['litpic'] neq ''"}
+                                                    <img id="cateimgs" height="100" src="__IMG__/indexUpload/{$archives.litpic}">
+                                                {/if}
+                                            </div>
+
+                                            <input name="litpic" type="hidden" value="{$archives.litpic}">
+                                            <!--  <div id="uploadify"></div> -->
+                                        </label>
+                                         <label style="float: left;">
+                                            <!-- <div id="myId" class="dropzone"></div> -->
+                                          
+                                            <div class="uploadify-button btn btn-azure" id="delimg"><span class="fa  fa-rotate-left">&nbsp&nbsp撤销</span></div>
+                                        </label>
+                                        
+                                    </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">属性</label>
+                            <div class="col-sm-6">
+                                <label>
+                                    <input type="checkbox" class="colored-danger" name="attr[]" value="" checked="checked">
+                                    <span class="text">Danger</span>
+                                </label>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">内容</label>
+                            <div class="col-sm-6">
+                                
+                                 <div class="col-lg-12 col-sm-12 col-xs-12">
+                                            <div class="widget flat radius-bordered">
+                                               
+                                                <div class="widget-body" name="content">
+                                                    <div class="widget-main no-padding">
+                                                      
+                                                            <textarea id="summernote"  name="content">{$archives.content}</textarea>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <!-- 自定义字段开始 -->
+                        {volist name="modelField" id="fieldLst"}
+                             <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label no-padding-right">{$fieldLst.field_cname}</label>
+                                <div class="col-sm-6">
+                                    {switch name="$fieldLst.field_type"}
+                                        {case value="1|7|8"}
+                                            <input class="form-control"  placeholder="" value="{$Field[$fieldLst.field_ename]}" name="{$fieldLst.field_ename}" type="text">                      
+                                        {/case}
+                                        {case 2}
+                                            <?php 
+                                                $values=explode(',',$fieldLst['field_values']);
+                                                foreach($values as $k =>$v):
+                                            ?>
+                                                <label>
+                                                    <input name="{$fieldLst.field_ename}" value="{$v}" type="radio" {if condition="$Field[$fieldLst.field_ename] eq $v"} checked="checked" {/if} class="colored-blue">
+                                                    <span class="text">{$v}&nbsp;&nbsp;&nbsp;</span>
+                                                </label>
+                                            <?php endforeach;?>
+                                            
+                                        {/case}
+                                        {case 3}
+                                            <?php 
+                                                $values=explode(',',$fieldLst['field_values']);
+                                                foreach($values as $k =>$v):
+                                            ?>
+                                                <label>
+                                                    <input type="checkbox" name="{$fieldLst.field_ename}[]" {if condition="in_array( $v,explode(',',$Field[$fieldLst.field_ename]) )"} checked="checked" {/if} value="{$v}" class="colored-blue" >
+                                                    <span class="text">{$v}&nbsp;&nbsp;&nbsp;</span>
+                                                </label>
+                                            <?php endforeach;?>
+                                        {/case}
+                                        {case 4}
+                                            <select name="{$fieldLst['field_ename']}">
+                                                <?php 
+                                                    $values=explode(',',$fieldLst['field_values']);
+                                                    foreach($values as $k =>$v):
+                                                ?>
+                                                    <option {if condition="$Field[$fieldLst.field_ename] eq $v"} selected="selected" {/if} value="{$v}">{$v}</option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        {/case}
+                                        {case 5}
+                                            <textarea class="form-control" style="min-height: 60px;" name="$fieldLst['field_ename']">{$Field[$fieldLst.field_ename]}</textarea>
+                                        {/case}
+                                        {case 6}
+                                            <input type="file" name="{$fieldLst['field_ename']}">
+                                            {if condition="$Field[$fieldLst.field_ename]"}
+                                            <label>
+                                                <a target="_blank" href="__IMG__/indexUpload/{$Field[$fieldLst.field_ename]}">查看内容</a>
+                                                <a onclick="delupload(this);" uploads="{$fieldLst['field_ename']}">删除上传文件</a>
+                                            </label>
+                                            {/if}
+                                            <input type="hidden" name="{$fieldLst['field_ename']}" value="{$Field[$fieldLst.field_ename]}">
+                                        {/case}
+                                        
+                                        {case 9}
+                                            <!-- app\common  -->
+                                           <?php echo get_summernote($fieldLst['field_ename'],$Field[$fieldLst.field_ename]);?>
+                                        {/case}
+                                        {default /}<input class="form-control"  placeholder="" value="{$Field[$fieldLst.field_ename]}" name="{$fieldLst.field_ename}" type="text">
+                                    {/switch}
+                                </div>
+                              
+                            </div>
+                        {/volist}
+                        <!-- 自定义字段结束 -->
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">点击量</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="click" placeholder="" name="click"  type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                       
+                        
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-default">保存信息</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>  
+    </div>
+
+        <!--Basic Scripts-->
+
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+  
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+
+     <script src="__ADMIN__/plus/layer/layer.js"></script>
+   <!--  -->
+    <script src="__ADMIN__/style/summernote.js"></script>
+    <script>
+        $('#summernote').summernote({ height: 300,width:800 });
+
+
+        $(function () {
+          
+            //撤销操作
+            var b=function(){
+                var imgurl=$("input[name='litpic']").val();
+                $.ajax({
+                    type:"post",
+                    dataType:"json",
+                    data:{img:imgurl},
+                    url:"{:url('archives/delimg')}",
+                    success:function(data){
+
+                       if (data==1) {
+                            $("#cateimgs").remove();
+                            $("input[name='litpic']").val('');
+                            return 1;
+                            
+                       }
+                       if (data==2) {
+                            layer.msg('撤销失败');
+                            // alert("撤销失败");
+                       }
+
+                    }
+                    
+                });
+            }
+            $("#uploadify").uploadify({
+                //指定swf文件
+                'swf': "__ADMIN__/plus/uploadify/uploadify.swf",
+                //后台处理的页面
+                'uploader': "{:url('archives/upimg')}",
+                'progressData' : 'speed',
+                //按钮显示的文字
+                'buttonText': '上传缩略图',
+                'buttonClass':'btn btn-azure',
+                //显示的高度和宽度，默认 height 30；width 120
+                //'height': 15,
+                //'width': 80,
+                //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                'fileTypeDesc': 'Image Files',
+                //允许上传的文件后缀
+                'fileObjName':'img',
+
+                'onUploadSuccess' : function(file,data,response) {
+                    
+                    var imgsrc="__IMG__/indexUpload/"+data;
+                    var cateimg="<img height='100' id='cateimgs' src='"+imgsrc+"'>";
+                    $("#cateimg").html(cateimg);
+                    $("input[name='litpic']").val(data);   
+                 },
+                 'onUploadStart':function(file){
+                    var imgurl=$("input[name='litpic']").val();
+                    if (imgurl) {
+                        b();
+                    }
+                 }
+                
+            });
+            $("#uploadify-button").removeAttr('style');
+
+          
+            //撤销按钮
+            $("#delimg").click(function(){
+                var imgurl=$("input[name='litpic']").val();
+                if(!imgurl){
+                      layer.msg('请先上传', {icon: 5});
+                    // alert("请先上传");
+                    return false;
+                }
+                //eg1
+                layer.confirm('确定要撤销吗', {icon: 3, title:'提示'}, function(index){
+                        b();
+                       layer.msg('撤销成功' ,{icon: 1});
+               
+                });
+               
+            });
+
+            
+
+        });
+        //删除上传附件
+            var aid=$("input[name=id]").val();
+            var model_id=$("input[name=model_id]").val();
+        function delupload(o){
+            
+            var del=$(o).parent().next("input").first().val();
+            var name=$(o).attr("uploads");
+            if(del==""){
+                layer.msg('文件已删除', {icon: 5});
+                return false;
+            }
+            layer.confirm('确定要删除吗', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    type:"post",
+                    dataType:"json",
+                    data:{model_id:model_id,del:del,name:name,aid:aid},
+                    url:"{:url('archives/updateimg')}",
+                    success:function(data){
+                        if (data==1) {
+                            $(o).parent().next("input").first().val('');
+                            $(o).parent().remove();
+                            layer.msg('删除成功' ,{icon: 1});
+                        }else{
+                            layer.msg('删除失败，请刷新之后重试', {icon: 5});
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+
+
+</body></html>

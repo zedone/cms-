@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+
+	<!-- /头部 -->
+
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li class="active">配置列表</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+
+<button type="button" tooltip="添加用户" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('add')}'"> <i class="fa fa-plus"></i> Add
+</button>
+<div  class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center" width="6%">ID</th>
+                                <th class="text-center">广告位名称</th>
+                                <th class="text-center">广告位宽度</th>
+                                <th class="text-center">广告位高度</th>
+                                <th class="text-center" width="12%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="row">
+							{volist name="lst" id="vo"}
+                            <tr id="tr_{$vo.id}">
+                                <td align="center">{$vo.id}</td>
+                                <td align="center">{$vo.name}</td>
+                                <td align="center">{$vo.width}</td>
+                                <td align="center">{$vo.height}</td>
+                                <td  align="center">
+                                    <a href="{:url('edit',['id'=>$vo.id])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+
+                                    <a confid="{$vo.id}" onclick="changedel(this);" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> ajax删除
+                                    </a>
+                                </td>
+                            </tr>
+							{/volist}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div>	{$lst->render()}			</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+	    <script src="__ADMIN__/plus/layer/layer.js"></script>
+    <script type="text/javascript">
+
+	function changedel(o){
+		var confid=$(o).attr("confid");
+		var mold=1;
+		layer.open({
+			  content: '确认删除该广告位及该广告位下的广告吗',
+			  btn: ['确认', '仅删除广告位', '取消'],
+			  yes: function(index, layero){
+			   	ajaxdel(confid,mold);
+			  },
+			  btn2: function(index, layero){
+			   mold=2;
+			   ajaxdel(confid,mold);
+			  },
+			  btn3: function(index, layero){
+			    //按钮【按钮三】的回调
+
+			    //return false 开启该代码可禁止点击该按钮关闭
+			  },
+			  cancel: function(){
+			    //右上角关闭回调
+
+			    //return false 开启该代码可禁止点击该按钮关闭
+			  }
+			});
+	}
+
+	function ajaxdel(confid,mold){
+	        $.ajax({
+	            type:"post",
+	            dataType:"json",
+	            data:{id:confid,molds:mold},
+	            url:"{:url('del')}",
+	            success:function(data){
+	                if(data==1){
+	                    // $("#row").load("{:url('conf/lst')} #row");
+	                    $("#tr_"+confid).remove();
+	                }
+	                if(data==0){
+	                    alert("删除失败");
+	                }
+	            },
+	            error:function(){
+	                alert("删除失败");
+	            },
+	        //     complete: function () {
+	        //         $("#row").load("{:url('conf/lst')} #row tr");
+	        //         //window.location.reload();
+	        //     },
+
+
+	        });
+	}
+
+    // function changedel(o){
+    //     if(confirm("确定删除数据")){
+    //         var confid=$(o).attr("confid");
+    //         $.ajax({
+    //             type:"post",
+    //             dataType:"json",
+    //             data:{id:confid},
+    //             url:"{:url('del')}",
+    //             success:function(data){
+    //                 if(data==1){
+    //                     // $("#row").load("{:url('conf/lst')} #row");
+    //                     $("#tr_"+confid).remove();
+    //                 }
+    //                 if(data==0){
+    //                     alert("删除失败");
+    //                 }
+    //             },
+    //             error:function(){
+    //                 alert("删除失败");
+    //             },
+    //         //     complete: function () {
+    //         //         $("#row").load("{:url('conf/lst')} #row tr");
+    //         //         //window.location.reload();
+    //         //     },
+	//
+	//
+    //         });
+    //     }
+    // }
+    </script>
+
+
+</body></html>

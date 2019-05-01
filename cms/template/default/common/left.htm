@@ -1,0 +1,30 @@
+<div class="page-menu-title">
+<h3>{$cates.catename}</h3>
+</div>
+<div class="page-menu-content">
+<ul>
+  {foreach name="left" item="vo"}
+<li {if condition="$vo.id eq $cateid"} class='current' {/if}><a href="
+          {switch name='vo.cate_attr'}
+            {case value='0'}{:url('Cate/index',array('id'=>$vo.id))}{/case}
+            {case value='1'}{:url('Page/index',array('id'=>$vo.id))}{/case}
+            {case value='2'}{$cate.link}{/case}
+            {default /}{$vo.link}
+          {/switch}
+  ">{$vo.catename}</a><i></i></li>
+  {/foreach}
+</ul>
+  <script type="text/javascript">
+                   $(document).ready(function(){
+        $('.page-menu-content ul').find('li:last').addClass('last');
+        
+        $('.page-menu-content > ul > li > a').click(function(){
+         if( $(this).parent('li').find('ul') ){
+          $(this).parent('li').find('ul').slideDown('fast');
+          $(this).parent('li').siblings('li').find('ul').slideUp('fast');
+          $(this).parent('li').addClass('current').siblings('li').removeClass('current');
+         }
+        }); 
+        
+       });
+</script></div>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.min.css" rel="stylesheet">
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li>
+                        <a href="#">配置管理</a>
+                    </li>
+                                    
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+         <form class="form-horizontal" enctype="multipart/form-data" role="form" action="" method="post">
+        <div class="widget-body">
+            <div class="widget-main ">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs tabs-flat" id="myTab11">
+                        <li class="active">
+                            <a data-toggle="tab" href="#home11">
+                                站点基本配置
+                            </a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" href="#profile11">
+                               联系方式
+                            </a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" href="#profile12">
+                                SEO配置
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content tabs-flat">
+                        <div id="home11" class="tab-pane active">
+                            {volist name="confRes" id="conf"}
+                            {if condition="$conf['cf_type'] eq 1"}
+                           <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label no-padding-right">{$conf.cname}</label>
+                                <div class="col-sm-6">
+                                    {switch name="$conf.dt_type"}
+                                        {case value="1"}<!-- 单行文本 -->
+                                            <input class="form-control"  placeholder="" value="{$conf.value}" name="{$conf.ename}" type="text">
+                                        {/case}<!-- 单选按钮 -->
+                                        {case value="2"}
+                                            <?php  $valuesAll1 = explode(',',$conf['values']);                    
+                                                    foreach($valuesAll1 as $k1 => $v1):
+                                             ?>
+                                                <div class="radio" style="float: left;padding-right: 15px;">
+                                                    <label>
+                                                        <input name="{$conf.ename}" value="{$v1}" {if condition="$conf['value'] eq $v1"} checked="checked" {/if} type="radio" class="colored-blueberry">
+                                                        <span class="text">{$v1}</span>
+                                                    </label>
+                                                </div>
+                                                
+                                            <?php endforeach; ?>
+                                        {/case}
+                                        {case value="3"}<!-- 多选按钮 -->
+                                            <?php $valuesAll2 = explode(',',$conf['values']);
+                                                    $valueAll = explode(',',$conf['value']);
+                                                    foreach($valuesAll2 as $k2 => $v2):
+                                             ?>
+                                            <div class="checkbox"  style="float: left;padding-right: 15px;">
+                                                <label>
+                                                    <input type="checkbox" value="{$v2}" {if condition="in_array($v2 ,$valueAll)"} checked="checked" {/if} name="{$conf.ename}[]" class="colored-blue" >
+                                                    <span class="text">{$v2}</span>
+                                                </label>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        {/case}
+                                        {case value="4"}<!-- 下拉菜单 -->
+                                            <select name="{$conf.ename}" style="width: 100%;">
+                                                <?php $valuesAll3 =explode(',',$conf['values']);
+                                                        foreach($valuesAll3 as $k3 => $v3):
+                                                ?>
+                                                <option value="{$v3}" {if condition="$v3 eq $conf['value']"} selected="selected" {/if} >{$v3}</option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        {/case}
+                                        {case value="5"}<!-- 文本域 -->
+                                            <textarea class="form-control"   placeholder="" name="{$conf.ename}">{$conf.value}</textarea>
+                                        {/case}
+                                        {case value="6"}<!-- 文件 -->
+                                            <input type="file"  style="float: left;"  name="{$conf.ename}"> {if condition="$conf['value']"} <img height="30" src="__IMG__/{$conf.value}">{else/}未上传{/if}
+                                        {/case}
+                                    {/switch}
+                                </div>
+                                <p class="help-block col-sm-4 red">* 必填</p>
+                            </div>
+                            {/if}
+                            {/volist}
+                        </div>
+
+                        <div id="profile11" class="tab-pane">
+                            {volist name="confRes" id="conf"}
+                            {if condition="$conf['cf_type'] eq 2"}
+                                <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label no-padding-right">{$conf.cname}</label>
+                                <div class="col-sm-6">
+                                    {switch name="$conf.dt_type"}
+                                        {case value="1"}<!-- 单行文本 -->
+                                            <input class="form-control"  placeholder="" value="{$conf.value}" name="{$conf.ename}" type="text">
+                                          <!--  <input type="hidden" id="hidden-input" class="colorpicker" value="#5DB2FF" style="width:34px;"> -->
+                                            <!-- <input type="text" id="text-field" class="form-control colorpicker" value="#70c24a"> -->
+                                        {/case}<!-- 单选按钮 -->
+                                        {case value="2"}
+                                            <?php  $valuesAll1 = explode(',',$conf['values']);                    
+                                                    foreach($valuesAll1 as $k1 => $v1):
+                                             ?>
+                                                <div class="radio" style="float: left;padding-right: 15px;">
+                                                    <label>
+                                                        <input name="{$conf.ename}" value="{$v1}" {if condition="$conf['value'] eq $v1"} checked="checked" {/if} type="radio" class="colored-blueberry">
+                                                        <span class="text">{$v1}</span>
+                                                    </label>
+                                                </div>
+                                                
+                                            <?php endforeach; ?>
+                                        {/case}
+                                        {case value="3"}<!-- 多选按钮 -->
+                                            <?php $valuesAll2 = explode(',',$conf['values']);
+                                                    $valueAll = explode(',',$conf['value']);
+                                                    foreach($valuesAll2 as $k2 => $v2):
+                                             ?>
+                                            <div class="checkbox"  style="float: left;padding-right: 15px;">
+                                                <label>
+                                                    <input type="checkbox" value="{$v2}" {if condition="in_array($v2 ,$valueAll)"} checked="checked" {/if} name="{$conf.ename}[]" class="colored-blue" >
+                                                    <span class="text">{$v2}</span>
+                                                </label>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        {/case}
+                                        {case value="4"}<!-- 下拉菜单 -->
+                                            <select name="{$conf.ename}" style="width: 100%;">
+                                                <?php $valuesAll3 =explode(',',$conf['values']);
+                                                        foreach($valuesAll3 as $k3 => $v3):
+                                                ?>
+                                                <option value="{$v3}" {if condition="$v3 eq $conf['value']"} selected="selected" {/if} >{$v3}</option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        {/case}
+                                        {case value="5"}<!-- 文本域 -->
+                                            <textarea class="form-control"   placeholder="" name="{$conf.ename}">{$conf.value}</textarea>
+                                        {/case}
+                                        {case value="6"}<!-- 文件 -->
+                                            <input type="file"  style="float: left;"  name="{$conf.ename}"> {if condition="$conf['value']"} <img height="30" src="__IMG__/upload/{$conf.value}">{else/}未上传{/if}
+                                        {/case}
+                                    {/switch}
+                                </div>
+                                <p class="help-block col-sm-4 red">* 必填</p>
+                            </div>
+                            {/if}
+                            {/volist}
+                        </div>
+
+                         <div id="profile12" class="tab-pane">
+                            {volist name="confRes" id="conf"}
+                            {if condition="$conf['cf_type'] eq 3"}
+                               <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label no-padding-right">{$conf.cname}</label>
+                                <div class="col-sm-6">
+                                    {switch name="$conf.dt_type"}
+                                        {case value="1"}<!-- 单行文本 -->
+                                            <input class="form-control"  placeholder="" value="{$conf.value}" name="{$conf.ename}" type="text">
+                                        {/case}<!-- 单选按钮 -->
+                                        {case value="2"}
+                                            <?php  $valuesAll1 = explode(',',$conf['values']);                    
+                                                    foreach($valuesAll1 as $k1 => $v1):
+                                             ?>
+                                                <div class="radio" style="float: left;padding-right: 15px;">
+                                                    <label>
+                                                        <input name="{$conf.ename}" value="{$v1}" {if condition="$conf['value'] eq $v1"} checked="checked" {/if} type="radio" class="colored-blueberry">
+                                                        <span class="text">{$v1}</span>
+                                                    </label>
+                                                </div>
+                                                
+                                            <?php endforeach; ?>
+                                        {/case}
+                                        {case value="3"}<!-- 多选按钮 -->
+                                            <?php $valuesAll2 = explode(',',$conf['values']);
+                                                    $valueAll = explode(',',$conf['value']);
+                                                    foreach($valuesAll2 as $k2 => $v2):
+                                             ?>
+                                            <div class="checkbox"  style="float: left;padding-right: 15px;">
+                                                <label>
+                                                    <input type="checkbox" value="{$v2}" {if condition="in_array($v2 ,$valueAll)"} checked="checked" {/if} name="{$conf.ename}[]" class="colored-blue" >
+                                                    <span class="text">{$v2}</span>
+                                                </label>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        {/case}
+                                        {case value="4"}<!-- 下拉菜单 -->
+                                            <select name="{$conf.ename}" style="width: 100%;">
+                                                <?php $valuesAll3 =explode(',',$conf['values']);
+                                                        foreach($valuesAll3 as $k3 => $v3):
+                                                ?>
+                                                <option value="{$v3}" {if condition="$v3 eq $conf['value']"} selected="selected" {/if} >{$v3}</option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        {/case}
+                                        {case value="5"}<!-- 文本域 -->
+                                            <textarea class="form-control"   placeholder="" name="{$conf.ename}">{$conf.value}</textarea>
+                                        {/case}
+                                        {case value="6"}<!-- 文件 -->
+                                            <input type="file"  style="float: left;"  name="{$conf.ename}"> {if condition="$conf['value']"} <img height="30" src="__IMG__/upload/{$conf.value}">{else/}未上传{/if}
+                                        {/case}
+                                    {/switch}
+                                </div>
+                                <p class="help-block col-sm-4 red">* 必填</p>
+                            </div>
+                            {/if}
+                            {/volist}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">保存信息</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    
+    <script type="text/javascript" src="__ADMIN__/style/jquery.minicolors.js"></script>
+    <script type="text/javascript">
+         $('.colorpicker').each(function () {
+            $(this).minicolors({
+                control: $(this).attr('data-control') || 'hue',
+                defaultValue: $(this).attr('data-defaultValue') || '',
+                inline: $(this).attr('data-inline') === 'true',
+                letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                opacity: $(this).attr('data-opacity'),
+                position: $(this).attr('data-position') || 'bottom left',
+                change: function (hex, opacity) {
+                    if (!hex) return;
+                    if (opacity) hex += ', ' + opacity;
+                    try {
+                        console.log(hex);
+                    } catch (e) { }
+                },
+                theme: 'bootstrap'
+            });
+
+        });
+    </script>
+
+</body></html>

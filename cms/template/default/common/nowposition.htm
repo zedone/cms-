@@ -1,0 +1,19 @@
+<section class="page-title page-title-inner clearfix"> 
+<div class="breadcrumbs float-right" skinobjectzone="HtmlBreadCrumb_3803"><span>当前位置：</span><a href="{:url('Index/index')}">主页</a> > <a href='/a/zhongwenjianti/'>中文简体</a> >
+	{foreach name="now" item="vo"}
+
+ <a href="
+ 		 {switch name='vo.cate_attr'}
+              {case value='0'}{:url('Cate/index',array('id'=>$vo.id))}{/case}
+              {case value='1'}{:url('Page/index',array('id'=>$vo.id))}{/case}
+              {case value='2'}{$cate.link}{/case}
+              {default /}{$vo.link}
+            {/switch}
+ ">{$vo.catename}</a> >
+ 	{/foreach}
+</div>
+  
+<div class="page-name float-left">
+<h2>{$now[0]['catename']}</h2>
+</div>
+ </section>

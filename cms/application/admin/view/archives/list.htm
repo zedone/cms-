@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html><head>
+        <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- 头部 -->
+    {include file="common/top"}
+    <!-- /头部 -->
+    
+    <div class="main-container container-fluid">
+        <div class="page-container">
+                        <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li class="active">文档管理</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<button type="button" tooltip="添加用户" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('cate/lst')}'"> <i class="fa fa-plus"></i> Add
+</button>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center" width="5%">ID</th>
+                                <th class="text-left">文章标题</th>
+                                <th class="text-center">属性</th>
+                                <th class="text-center">所属栏目</th>
+                                <th class="text-center">所属模型</th>
+                                <th class="text-center" width="14%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           {volist name="lstRes" id="lst"}
+                            <tr fid="tr_    ">
+                                <td align="center">{$lst.id}</td>
+                                <td align="left">{$lst.title}</td>
+                                <td align="center">{$lst.attr}</td>
+                                <td align="center">{$lst.catename}</td>
+                                <!-- 1文本输入，2单选，3多选，4下拉菜单，5文本域，6附件 7浮点，8整型，9长文本 -->
+                                <td align="center">{$lst.model_name}</td>
+
+                                <td align="center">
+                                    <a href="{:url('edit',['id'=>$lst.id,'model_id'=>$lst.model_id])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a href="#"   onclick="ajaxdel(this)" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/volist}
+                                                    </tbody>
+
+                    </table>
+                </div>
+                <div>
+                    {$lstRes->render()}
+                                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>  
+    </div>
+
+        <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <script src="__ADMIN__/plus/layer/layer.js"></script>
+    <script type="text/javascript">
+
+        function ajaxdel(o){
+             layer.confirm('确定要删除吗', {icon: 3, title:'提示'}, function(index){
+                var modelid=$(o).attr('modelid');
+                var model_ename=$(o).attr('model_ename');
+                $.post("{:url('ajaxdel')}",{id:modelid},function(data){
+                    if(data==1){
+                        $('tr[fid=tr_'+modelid+']').remove();
+                        layer.msg('删除成功' ,{icon: 1});
+                    }
+                    if (data==2){
+                        layer.msg("删除失败");
+                    }
+                });
+              
+            });
+            
+        }
+    </script>
+
+
+</body></html>

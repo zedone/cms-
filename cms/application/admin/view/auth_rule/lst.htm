@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+
+	<!-- /头部 -->
+
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li class="active">配置列表</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+
+<button type="button" tooltip="添加用户" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('add',['pid'=>'0'])}'"> <i class="fa fa-plus"></i> Add
+</button>
+<div  class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr pid="tr_0">
+                                <th class="text-center" width="6%">ID</th>
+                                <th class="text-left" width="62%">权限名称</th>
+								<th class="text-left" width="20%">权限内容</th>
+                                <th class="text-center" width="12%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="row">
+							{volist name="lst" id="rule"}
+                            <tr pid="tr_{$rule.pid}" id="tr_{$rule.id}" style=" background-color: {switch $rule['level']}
+                                                            {case 0}#fff;{/case}
+                                                            {case 1}#ccc;{/case}
+                                                            {case 2}#999;{/case}
+                                                            {default}#666;
+                                                            {/switch}
+                                            ">
+                                <td align="center">{$rule.id}</td>
+
+								<td align="left">
+									<a class="on" style="overflow: hidden;padding: 0 5px;height: 100%;cursor: pointer;font-size: 18px;">
+									<?php echo str_repeat("-----|  ",$rule['level']);?>
+										{$rule.title}<i class="fa blue fa-plus"></i>
+									</a>
+									<button type="button" tooltip="添加子栏目" style="float: right;" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('add',array('pid'=>$rule['id']))}'"> <i class="fa fa-plus"></i>添加子规则</button>
+								</td>
+								<td align="left">{$rule.name}</td>
+                                <td  align="center">
+                                    <a href="{:url('edit',['id'=>$rule.id])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+
+                                    <a ruleid="{$rule.id}" onclick="ajaxdel(this);" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> ajax删除
+                                    </a>
+                                </td>
+                            </tr>
+							{/volist}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div>	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+	    <script src="__ADMIN__/plus/layer/layer.js"></script>
+    <script type="text/javascript">
+
+	$('tr[pid!=tr_0]').hide();
+	$('.on').parent("td").click(function(){
+	   var id=$(this).parents('tr').attr('id');
+	   if ($(this).find('i').first().attr('class')=='fa blue fa-plus') {
+		   $(this).find('i').first().attr("class","fa blue fa-minus");
+		   $('tr[pid='+id+']').show();
+	   }else{
+		   $(this).find('i').first().attr("class","fa blue fa-plus");
+		   $('tr[pid='+id+']').hide();
+		   var a=$(this).parents('tr');
+		   ss_catechild(a);
+	   }
+
+	});
+	//遍历关闭所有的子伸缩栏目
+	function ss_catechild(p){
+	   var r = p.next();
+	   if(r.attr('pid')==p.attr('id')){
+		   r.find('i').first().attr('class','fa blue fa-plus');
+		   r.hide();
+		   ss_catechild(r);
+	   }
+   }
+
+
+	//ajax删除
+	function ajaxdel(o){
+		layer.confirm('确认删除该规则及其子规则?', {icon: 3, title:'提示'}, function(index){
+
+			var id=$(o).attr('ruleid');
+
+			$.ajax({
+				type:"post",
+				dataType:"json",
+				data:{id:id},
+				url:"{:url('ajaxdel')}",
+				success:function(data){
+					if(data==2){
+						layer.msg('删除失败',{anim: 6,icon: 5});
+					}else{
+						$.each(data,function(key,value){
+							$("#tr_"+value).remove();
+						});
+						layer.msg('删除成功',{icon: 1});
+					}
+				},
+				error:function(){
+					layer.msg('删除失败',{anim: 6,icon: 5});
+				}
+			});
+
+
+		  layer.close(index);
+		});
+	}
+    </script>
+
+
+</body></html>

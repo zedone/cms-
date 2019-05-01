@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+
+	<!-- /头部 -->
+
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li class="active">栏目列表</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+
+<button type="button" tooltip="添加用户" class="btn btn-info shiny" onClick="javascript:window.location.href = '{:url('add')}'"> <i class="fa fa-plus"></i>添加
+</button>
+
+                                   <a class="btn btn-info shiny" onclick="ajaxsort();">ajax排序</a>
+                                   <a class="btn btn-info shiny" onclick="ajaxdel();">ajax批量删除</a>
+<div class="row">
++    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                 <!--    <form  id="formid"   method="post"> -->
+
+
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr pid='tr_0'>
+                                <th class="text-center" width="5%">
+                                    <label>
+                                        <input type="checkbox" id="checkAll" class="inverted">
+                                        <span class="text">全选</span>
+                                    </label>
+                                </th>
+                                <th class="text-center" width="6%">ID</th>
+                                <th class="text-left">栏目名称</th>
+                                <th class="text-center">栏目状态</th>
+                                <th class="text-center">栏目属性</th>
+                                <th class="text-center">所属模型</th>
+                                <th class="text-center" width="6%">排序</th>
+                                <th class="text-center" width="12%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="row">
+                             {volist name="catelst" id="lst"}
+                            
+                            <tr style=" background-color: {switch $lst['level']}
+                                                            {case 0}#fff;{/case}
+                                                            {case 1}#ccc;{/case}
+                                                            {case 2}#999;{/case}
+                                                            {default}#666;
+                                                            {/switch}
+                                            "  id="tr_{$lst.id}" pid="tr_{$lst.pid}">
+
+                                <td align="center">
+                                    <label>
+                                        <input type="checkbox" name="itm"  value="{$lst.id}" class="colored-blue">
+                                        <span class="text"></span>
+                                    </label>
+                                </td>
+                                <td align="center">{$lst.id}</td>
+                                <td align="left">
+                                    <a class="on" style="overflow: hidden;padding: 0 5px;height: 100%;cursor: pointer;font-size: 18px;"><?php echo str_repeat("-----|  ",$lst['level']);?>{$lst.catename}
+                                        <i class="fa blue fa-plus"></i>
+                                    </a>
+
+                                    <button type="button" tooltip="添加子栏目" style="float: right;" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('add',array('cate_pid'=>$lst['id']))}'"> <i class="fa fa-plus"></i>添加子栏目</button>
+                                    <button type="button" tooltip="添加文章" style="float: right;margin: 0 10px 0 0" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('Archives/add',array('cate_id'=>$lst['id'],'model_id'=>$lst['model_id']))}'"> <i class="fa fa-plus"></i>添加文章</button>
+                                </td>
+                                <td align="center"><a onclick="changestate(this);" cateid={$lst.id}  {if condition="$lst['state'] eq 0"} class="btn btn-primary btn-sm shiny">隐藏{else /} class="btn btn-danger btn-sm shiny">显示{/if}</a>
+                                </td>
+                                <td align="center">
+                                    {switch name="$lst['cate_attr']"}
+                                        {case value="0"}列表栏目{/case}
+                                        {case value="1"}封面栏目{/case}
+                                        {case value="2"}<a href="{$lst['link']}" target="_blank">外链</a>{/case}
+                                    {/switch}
+                                </td>
+                                <td align="center">{$lst['model_name']}</td>
+                                <td align="center"><input type="text" style="width: 100%;text-align: center;" id="sort" name="{$lst.id}" value="{$lst.sort}"></td>
+                                <td align="center">
+                                    <a href="{:url('edit',array('id'=>$lst['id']))}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                   <!--  <a href="#" onClick="warning('确实要删除当前栏目及其子栏目吗', '{:url('del',array('cateid'=>$lst['id']))}')" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a> -->
+                                    <a catesid="{$lst.id}" class="btn btn-danger btn-sm shiny" onclick="delone(this);">ajax删除</a>
+                                </td>
+
+                            </tr>
+                            {/volist}
+                            <tr>
+                                <td colspan="6"></td>
+                                <td colspan="2">
+
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                   <!--  </form> -->
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <script type="text/javascript">
+        //改变隐藏于显示
+        function changestate(o){
+            var cateid=$(o).attr("cateid");
+            $.ajax({
+                type:"post",
+                dataType:"json",
+                data:{id:cateid},
+                url:"{:url('Cate/changestate')}",
+                success:function(data){
+                    if (data==0) {
+                        $(o).attr("class","btn btn-primary btn-sm shiny");
+                        $(o).text('隐藏');
+                    }else{
+                        $(o).attr("class","btn btn-danger btn-sm shiny");
+                        $(o).text('显示');
+                    }
+                }
+            });
+        }
+
+        //获取全选
+        $('#checkAll').click(function(){
+            if($('#checkAll').prop('checked')){
+                $('.colored-blue').prop('checked',true);
+            }else{
+                $('.colored-blue').prop('checked',false);
+            }
+        });
+
+
+        //ajax排序
+        function ajaxsort(){
+           var json={};
+          $('input').not('#itm').each(function(){
+            json[$(this).attr('name')]=$(this).val();
+          });
+            $.ajax({
+                url:"{:url('Cate/sort')}",
+                type:"post",
+                data:json,
+                success:function(data){
+                    if(data==1){
+                        $("#row").load("{:url('Cate/lst')} #row tr");
+                    }
+                }
+            });
+        }
+
+        //ajax删除单个栏目
+        function delone(o){
+            if(confirm("你确定要删除当前栏目及其子栏目吗？")){
+                var catesid=$(o).attr("catesid");
+                $.ajax({
+                    type:"post",
+                    dataType:"json",
+                    data:{cateid:catesid},
+                    url:"{:url('Cate/delone')}",
+                    success:function(aab){
+                       // if(data==1){
+                       //  $("#row").load("{:url('cate/lst')} #row tr");
+                       // }
+                        if(aab==2){
+                            alert('删除错误');
+                        }else{
+                            $.each(aab,function(key,value){
+                              // alert(value);
+                                $("#tr_"+value).remove();
+                            });
+                        }
+
+
+                    }
+                });
+            }
+        }
+
+         //ajax批量删除
+        function ajaxdel(){
+            var checkedNum = $("input[name='itm']:checked").length;
+            if(checkedNum == 0) {
+                alert("请选择至少一项！");
+                return;
+            }
+            if(confirm("确定要删除所选项目？")) {
+                var json=[];
+                $("input[name='itm']:checked").each(function(){
+                     json.push($(this).val());
+                });
+
+                $.ajax({
+                    type:"post",
+                    dataType:"json",
+                    url:"{:url('Cate/delsome')}",
+                    data:{id:json},
+                    success:function(aaab){
+                       // if (data==1) {
+                       //    $("#row").load("{:url('cate/lst')} #row tr");
+                       // }
+                       if (aaab==2) {
+                            alert('删除失败');
+                       }else{
+                            $.each(aaab,function(key,value){
+                                $("#tr_"+value).remove();
+                            });
+                       }
+                    }
+                });
+            }
+        }
+
+        //显示顶级栏目然后点击显示子栏目
+        //栏目伸缩只有点击+和栏目名称的时候作用
+         // $('tr[pid!=tr_0]').hide();
+         // $('.on').click(function(){
+         //    var id=$(this).parents('tr').attr('id');
+         //    if ($(this).children('i').attr('class')=='fa blue fa-plus') {
+         //        $(this).children('i').attr("class","fa blue fa-minus");
+         //        $('tr[pid='+id+']').show();
+         //    }else{
+         //        $(this).children('i').attr("class","fa blue fa-plus");
+         //        $('tr[pid='+id+']').hide();
+         //        var a=$(this).parents('tr');
+         //        ss_catechild(a);
+         //    }
+
+         // });
+         // 栏目伸缩点击td即可作用
+         $('tr[pid!=tr_0]').hide();
+         $('.on').parent("td").click(function(){
+            var id=$(this).parents('tr').attr('id');
+            if ($(this).find('i').first().attr('class')=='fa blue fa-plus') {
+                $(this).find('i').first().attr("class","fa blue fa-minus");
+                $('tr[pid='+id+']').show();
+            }else{
+                $(this).find('i').first().attr("class","fa blue fa-plus");
+                $('tr[pid='+id+']').hide();
+                var a=$(this).parents('tr');
+                ss_catechild(a);
+            }
+
+         });
+         //遍历关闭所有的子伸缩栏目
+         function ss_catechild(p){
+            var r = p.next();
+            if(r.attr('pid')==p.attr('id')){
+                r.find('i').first().attr('class','fa blue fa-plus');
+                r.hide();
+                ss_catechild(r);
+            }
+        }
+        // ($(this).attr('pid')!=tr_0).hide();
+         //$('')
+
+
+    </script>
+
+
+</body>
+</html>

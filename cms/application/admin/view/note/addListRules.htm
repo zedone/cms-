@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+        <script src="__ADMIN__/style/jquery_002.js"></script>
+</head>
+<body>
+	<!-- 头部 -->
+    {include file="common/top"}
+
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+          {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li>
+                        <a href="{:url('note/lst')}">采集</a>
+                    </li>
+                                        <li class="active">添加采集</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">新增节点列表采集</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" action="" method="post">
+
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">节点名称</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" placeholder="" name="note_name" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">所属模型</label>
+                            <div class="col-sm-6">
+                                <select name="model_id" style="width: 100%;">
+                                        <option value="0">选择模型</option>
+                                            {volist name="model" id="model"}
+                                                <option value="{$model.id}">{$model.model_name}</option>
+                                            {/volist}
+                                </select>
+                            </div>
+                        </div> 
+                       <!--  <div class="form-group">
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">最大采集数量</label>
+                            <div class="col-sm-6">
+                                <div class="col-lg-6 col-sm-6 col-xs-6">
+                                    <div class="spinner spinner-horizontal spinner-right">
+                                        <div class="spinner-buttons btn-group">
+                                            <button type="button" class="btn spinner-down blueberry">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn spinner-up purple">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" name="num" class="spinner-input form-control" maxlength="3">
+
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>   -->
+                        <div class="form-group">
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">输入编码</label>
+                            <div class="col-xs-4">
+                                <label>
+                                   <label style="padding-right: 15px;">
+                                        <input type="radio" name="input_encoding" checked="checked" value="UTF-8" class="colored-blue">
+                                        <span class="text">UTF-8</span>
+                                    </label>
+                                    <label style="padding-right: 15px;">
+                                        <input type="radio" name="input_encoding" value="GB2312" class="colored-blue">
+                                        <span class="text">GB2312</span>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>  
+                         <div class="form-group">
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">输出编码</label>
+                            <div class="col-xs-4">
+                                <label>
+                                   <label style="padding-right: 15px;">
+                                        <input type="radio" name="output_encoding" checked="checked" value="UTF-8" class="colored-blue">
+                                        <span class="text">UTF-8</span>
+                                    </label>
+                                    <label style="padding-right: 15px;">
+                                        <input type="radio" name="output_encoding" value="GB2312" class="colored-blue">
+                                        <span class="text">GB2312</span>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>  
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">列表URL</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" placeholder="" name="list_url" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">若有分页，则页码部分用“(*)”代替</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">页码配置</label>
+                            <div class="col-sm-6">
+                                <span style="float: left;padding:5px 10px;">从</span>
+                                <input class="form-control" placeholder="" style="width: 80px;float: left;padding:5px 10px;text-align: center;" name="start_page" type="text">
+                                 <span style="float: left;padding:5px 10px;">到</span>
+                                <input class="form-control" placeholder="" style="width: 80px;float: left;padding:5px 10px;text-align: center;" name="end_page" type="text">
+                                 <span style="float: left;padding:5px 10px;">每次递增</span>
+                                <input class="form-control" placeholder="" style="width: 80px;float: left;padding:5px 10px;text-align: center;" name="step" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">采集范围/片段</label>
+                            <div class="col-sm-6">
+                                <textarea  class="form-control" name="range"></textarea>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">URL采集规则</label>
+                            <div class="col-sm-6">
+                                <textarea  class="form-control" name="url"></textarea>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">缩略图采集规则</label>
+                            <div class="col-sm-6">
+                                <textarea  class="form-control" name="litpic"></textarea>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-default">添加并进入下一步</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+  
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/plus/layer/layer.js"></script>
+
+    <script type="text/javascript" src="__ADMIN__/style/fuelux.spinner.min.js"></script>
+
+    <script src="__ADMIN__/style/wizard-custom.js"></script>
+    <script type="text/javascript">
+         $('.spinner').spinner();
+        jQuery(function ($) {
+            $('#simplewizardinwidget').wizard();
+            $('#simplewizard').wizard();
+            $('#tabbedwizard').wizard().on('finished', function (e) {
+                Notify('Thank You! All of your information saved successfully.', 'bottom-right', '5000', 'blue', 'fa-check', true);
+            });
+            $('#WiredWizard').wizard();
+        });
+    </script>
+    
+
+</body></html>

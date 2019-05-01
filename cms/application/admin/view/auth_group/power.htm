@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+	<!-- /头部 -->
+
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li>
+                        <a href="{:url('lst')}">列表</a>
+                    </li>
+                                        <li class="active">添加用户组</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">用户组权限</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" action="{:url('power')}" method="post">
+						<input type="hidden" name="id" value="{$pow.id}" />
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">用户组名：</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" placeholder="" value="{$pow.title}" name="title"  disabled="disabled" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">权限分配：</label>
+                            <label>
+								<table class="table table-hover">
+                                    <thead class="bordered-darkorange">
+                                        <tr>
+                                            <th>
+                                                &nbsp;
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+										<!-- 顶级权限 -->
+										{foreach name="auth" id="v0"}
+                                        <tr>
+                                            <td>
+												<label>
+                                                    <input id="{$v0.id}" value="{$v0.id}" dataid="id-{$v0.id}" name="rules[]" type="checkbox" class="colored-danger checkbox-parent" {if condition="in_array($v0.id,$rule)"} checked="checked" {/if}>
+                                                    <span class="text">{$v0.title}</span>
+                                                </label>
+											</td>
+                                        </tr>
+											<!-- 如果有二级权限，则循环，否则不显示，防止页面错乱 -->
+											{if condition="$v0['children']"}
+												<!-- 循环顶级权限下的children，得到二级权限 -->
+												{foreach name="v0['children']" id="v1"}
+												<tr>
+													<td style="padding-left:40px;">
+														<label>
+                                                            <input id="{$v1.id}" value="{$v1.id}"  name="rules[]" dataid="id-{$v0.id}-{$v1.id}" type="checkbox" class="colored-blue checkbox-parent checkbox-child" {if condition="in_array($v1.id,$rule)"} checked="checked" {/if}>
+                                                            <span class="text">{$v1.title}</span>
+                                                        </label>
+													</td>
+												</tr>
+													<!-- 如果有三级权限，则循环，否则不显示，防止页面错乱 -->
+													{if condition="$v1['children']"}
+													<!-- 循环二级权限的children得到3级权限 -->
+													<tr>
+														<td style="padding-left:80px;">
+															{foreach name="$v1['children']" id="v2"}
+																<label style="padding-left:20px;">
+		                                                            <input id="{$v2.id}"  name="rules[]" value="{$v2.id}" dataid="id-{$v0.id}-{$v1.id}-{$v2.id}" type="checkbox" class="colored-warning checkbox-child" {if condition="in_array($v2.id,$rule)"} checked="checked" {/if}>
+		                                                            <span class="text">{$v2.title}</span>
+		                                                        </label>
+															{/foreach}
+														</td>
+													</tr>
+													{/if}
+													<!-- 三级权限是否存在判断结束 -->
+												{/foreach}
+
+											{/if}
+											<!-- 二级权限是否存在判断结束 -->
+										{/foreach}
+                                    </tbody>
+                                </table>
+                            </label>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">添加</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+	<script type="text/javascript">
+	/* 权限配置 */
+	// 顶级权限class为checkbox-parent,
+	// 二级权限为checkbox-parent checkbox-child
+	// 三级权限为checkbox-child
+	$(function () {
+	    //动态选择框，上下级选中状态变化
+	    $('input.checkbox-parent').on('change', function () {
+	        var dataid = $(this).attr("dataid");
+	        $('input[dataid^=' + dataid + ']').prop('checked', $(this).is(':checked'));
+	    });
+	    $('input.checkbox-child').on('change', function () {
+	        var dataid = $(this).attr("dataid");
+	        dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+	        var parent = $('input[dataid=' + dataid + ']');
+	        if ($(this).is(':checked')) {
+	            parent.prop('checked', true);
+	            //循环到顶级
+	            while (dataid.lastIndexOf("-") != 2) {
+	                dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+	                parent = $('input[dataid=' + dataid + ']');
+	                parent.prop('checked', true);
+	            }
+	        } else {
+	            //父级
+	            if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+	                parent.prop('checked', false);
+	                //循环到顶级
+	                while (dataid.lastIndexOf("-") != 2) {
+	                    dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+	                    parent = $('input[dataid=' + dataid + ']');
+	                    if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+	                        parent.prop('checked', false);
+	                    }
+	                }
+	            }
+	        }
+	    });
+	});
+</script>
+
+
+</body></html>

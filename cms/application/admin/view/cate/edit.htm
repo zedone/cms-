@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>ThinkPHP5.0</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+  
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+   <!--  
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/plus/dropzone-master/dist/min/basic.min.css">
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/plus/dropzone-master/dist/min/dropzone.min.css">
+    <script type="text/javascript" src="__ADMIN__/plus/dropzone-master/dist/min/dropzone.min.js"></script>
+
+ -->
+<!--  <link rel="stylesheet" type="text/css" href="__ADMIN__/plus/uploadify/uploadify.css"> -->
+ <script type="text/javascript" src="__ADMIN__/plus/uploadify/jquery.uploadify.min.js"></script>
+
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/top"}
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li>
+                        <a href="{:url('lst')}">栏目列表</a>
+                    </li>
+                                        <li class="active">添加栏目</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">修改栏目信息</span>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main ">
+                    <form class="form-horizontal" role="form"  enctype="multipart/form-data" action="{:url('edit')}" method="post">
+                        <input type="hidden"  value="{$catedata.id}" name="id" >
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs tabs-flat" id="myTab11">
+                            <li class="active">
+                                <a data-toggle="tab" href="#home11">
+                                    栏目基本信息
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#profile11">
+                                    SEO信息
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#profile12">
+                                    栏目内容
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content tabs-flat">
+                            <div id="home11" class="tab-pane in active">
+                                 <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">所属模型</label>
+                                    <div class="col-sm-6">
+                                        <select name="model_id" style="width: 100%;">
+                                                <option value="0">选择模型</option>
+                                            {volist name="model" id="model"}
+                                                <option {if condition="$model.id eq $catedata.model_id"} selected="selected" {/if} value="{$model.id}">{$model.model_name}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">上级栏目</label>
+                                    <div class="col-sm-6">
+                                        <select name="pid" style="width: 100%;">
+                                            <option  value="0">顶级栏目</option>
+                                            {volist name="catelst" id="lst"}
+                                                {if condition="!in_array($lst['id'],$catepids)"}
+                                                    <option {if condition="$lst['id'] eq $catedata['pid']"}selected="selected"{/if} value="{$lst.id}"><?php echo str_repeat("-----|  ",$lst['level']);?>{$lst.catename} </option>
+                                                {/if}
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                   
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">栏目名称</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control"  placeholder="" value="{$catedata.catename}" name="catename" required="" type="text">
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">隐藏栏目</label>
+                                    <div class="col-xs-4">
+                                        <label>
+                                            <input name="state" {if condition="$catedata['state'] eq 0"} checked="checked" {/if} class="checkbox-slider slider-icon colored-blue" type="checkbox">
+                                            <span class="text"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">是否在底部显示</label>
+                                    <div class="col-xs-4">
+                                        <label>
+                                            <input name="bottom_nav" {if condition="$catedata['bottom_nav'] eq 1"} checked="checked" {/if} value="1" class="checkbox-slider slider-icon colored-blue" type="checkbox">
+                                            <span class="text"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">栏目图片</label>
+                                    <div class="col-xs-4">
+        
+                                        <label style="float: left;">
+                                            <!-- <div id="myId" class="dropzone"></div> -->
+                                            <span id="uploadify"></span>
+                                            <div class="col-xs-4" id="cateimg">
+                                                {if condition="$catedata['img'] neq ''"}
+                                                    <img id="cateimgs" height="100" src="__IMG__/upload/{$catedata.img}">
+                                                {/if}
+                                            </div>
+                                            <input name="img" type="hidden" value="{$catedata.img}">
+                                          <!--  <div id="uploadify"></div> -->
+                                        </label>
+
+                                       <!--  <label>
+                                            <button type="button" class="layui-btn" id="test1">
+                                              <i class="layui-icon">&#xe67c;</i>上传图片
+                                            </button>
+                                        </label> -->
+
+                                        <label style="float: left;">
+                                            <!-- <div id="myId" class="dropzone"></div> -->
+                                          
+                                            <div class="uploadify-button btn btn-azure" id="delimg"><span class="fa  fa-rotate-left">&nbsp&nbsp撤销</span></div>
+                                        </label>
+                                    </div>
+
+
+                            
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">栏目属性</label>
+                                    <div class="col-sm-6">
+                                        <label style="padding-right: 15px;">
+                                            <input type="radio" name="cate_attr" {if condition="$catedata['cate_attr'] eq 0"} checked="checked" {/if} value="0" class="colored-blue">
+                                            <span class="text">列表页栏目（可以发布文章）</span>
+                                        </label>
+                                        <label style="padding-right: 15px;">
+                                            <input type="radio" name="cate_attr" {if condition="$catedata['cate_attr'] eq 1"} checked="checked" {/if} value="1" class="colored-blue">
+                                            <span class="text">封面频道栏目</span>
+                                        </label>
+                                        <label style="padding-right: 15px;">
+                                            <input type="radio" name="cate_attr" {if condition="$catedata['cate_attr'] eq 2"} checked="checked" {/if} value="2" class="colored-blue">
+                                            <span class="text">外部链接</span>
+                                        </label>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">列表页栏目模板</label>
+                                    <div class="col-sm-6">
+                                        <select name="list_tmp">
+                                            <option {if condition="$catedata.list_tmp eq 'list_article.html'"} selected="selected" {/if} value="list_article.html">list_article.html</option>
+                                            <option {if condition="$catedata.list_tmp eq 'index_article.html'"} selected="selected" {/if} value="index_article.html">index_article.html</option>
+                                        </select>
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">频道页栏模板</label>
+                                    <div class="col-sm-6">
+                                        <select name="index_tmp">
+                                            <option {if condition="$catedata.index_tmp eq 'list_img.html'"} selected="selected" {/if} value="list_img.html">list_img.html</option>
+                                            <option {if condition="$catedata.index_tmp eq 'list_pro.html'"} selected="selected" {/if} value="list_pro.html">list_pro.html</option>
+                                        </select>
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">内容页频道模板</label>
+                                    <div class="col-sm-6">
+                                        <select name="article_tmp">
+                                            <option {if condition="$catedata.article_tmp eq 'article_article.html'"} selected="selected" {/if} value="article_article.html">article_article.html</option>
+                                        </select>
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+
+                               
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">外链地址</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control"  placeholder="http://" value="{$catedata.link}" name="link" type="text">
+                                    </div>
+                                    <p class="help-block col-sm-4 red">为外链栏目类型在此填写地址</p>
+                                </div>
+                            </div>
+
+                            <div id="profile11" class="tab-pane">
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">栏目标题</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control"  placeholder="" value="{$catedata.title}" name="title" required="" type="text">
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">关键词</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control"  placeholder="" value="{$catedata.keyword}" name="keyword"  type="text">
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-2 control-label no-padding-right">描述</label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control"  name="desc">{$catedata.desc}</textarea>
+                                    </div>
+                                    <p class="help-block col-sm-4 red">* 必填</p>
+                                </div>
+                            </div>
+
+                            <div id="profile12" class="tab-pane">
+                                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                                            <div class="widget flat radius-bordered">
+                                                <div class="widget-header bordered-bottom bordered-themeprimary">
+                                                    
+                                                    <div class="widget-buttons">
+                                                        <a href="#" data-toggle="maximize">
+                                                            <i class="fa fa-expand"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="widget-body" >
+                                                    <div class="widget-main no-padding">
+                                                      
+                                                            <textarea id="summernote" name="content">{$catedata.content}</textarea>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">保存信息</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+                </div>
+            </div>      
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+
+    <script src="__ADMIN__/style/summernote.js"></script>
+    <script>
+        $('#summernote').summernote({ height: 300 });
+    </script>
+
+       <!-- layer引用 -->
+     <script src="__ADMIN__/plus/layer/layer.js"></script>
+
+
+   <!-- dropzone -->
+<!--     <script>
+
+        $("div#myId").dropzone({ 
+
+            url: "{:url('cate/upimg')}" ,
+            paramName: "img",
+            maxFilesize: "2",           //文件大小
+            parallelUploads: "1",       //同时上传数
+            maxFiles: "1",              //最大上传数
+            addRemoveLinks: "true",
+            dictCancelUploadConfirmation:"取消",
+            dictRemoveFile:"取消",
+            acceptedFiles :"image/*",
+            dictDefaultMessage:"拖拽或点击上传文件",
+            dictInvalidInputType: "文件类型不符合要求",
+            dictFileTooBig:"文件过大，无法上传",
+            dictFallbackMessage:"浏览器不受支持",
+            'success':function(file,data){
+                alert(data);
+            }
+    });
+</script> -->
+
+<script>
+layui.use('upload', function(){
+  var upload = layui.upload;
+   
+  //执行实例
+  var uploadInst = upload.render({
+    elem: '#test1' //绑定元素
+    ,url: '/upload/' //上传接口
+    ,done: function(res){
+      //上传完毕回调
+    }
+    ,error: function(){
+      //请求异常回调
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+
+
+
+
+        $(function () {
+          
+            //撤销操作
+            var b=function(){
+                var imgurl=$("input[name='img']").val();
+                var cateid={$catedata.id};
+                $.ajax({
+                    type:"post",
+                    dataType:"json",
+                    data:{img:imgurl,cateid:cateid},
+                    url:"{:url('cate/delimg')}",
+                    success:function(data){
+                       if (data==1) {
+                            $("#cateimgs").remove();
+                            $("input[name='img']").val('');
+                            
+                       }
+                       if (data==2) {
+                            alert("撤销失败");
+                       }
+                    }
+                });
+            }
+            $("#uploadify").uploadify({
+                //指定swf文件
+                'swf': "__ADMIN__/plus/uploadify/uploadify.swf",
+                //后台处理的页面
+                'uploader': "{:url('cate/upimg')}",
+                'progressData' : 'speed',
+                //按钮显示的文字
+                'buttonText': '上传文件',
+                'buttonClass':'btn btn-azure',
+                //显示的高度和宽度，默认 height 30；width 120
+                //'height': 15,
+                //'width': 80,
+                //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                'fileTypeDesc': 'Image Files',
+                //允许上传的文件后缀
+                'fileObjName':'img',
+
+                'onUploadSuccess' : function(file,data,response) {
+                    var imgsrc="__IMG__/upload/"+data;
+                    var cateimg="<img height='100' id='cateimgs' src='"+imgsrc+"'>";
+                    $("#cateimg").html(cateimg);
+                    $("input[name='img']").val(data);   
+
+                    //修改上传文件操作成功时，修改数据库img数据
+                    var id={$catedata.id};
+                     $.ajax({
+                        url:"{:url('cate/updateimg')}",
+                        type:'post',
+                        data:{img:data,id:id},
+                        success:function(data){
+                            
+                        }
+                    });
+                 },
+                 'onUploadStart':function(file){
+                    var imgurl=$("input[name='img']").val();
+                    if (imgurl) {
+                        b();
+                    }
+                 }
+                
+            });
+            $("#uploadify-button").removeAttr('style');
+
+          
+            //撤销按钮
+            $("#delimg").click(function(){
+                var imgurl=$("input[name='img']").val();
+                if(!imgurl){
+                    alert("请先上传");
+                    return false;
+                }
+                b();
+            });
+
+             //根据上级栏目的id改变栏目模板
+            function changeTmp(){
+                var CatePid=$("select[name=pid]").find("option:selected").val();
+                if(CatePid != 0){
+                    $.post("{:url('ajaxCateInfo')}",{pid:CatePid},function(data){
+                        $("input[name=list_tmp]").val(data.list_tmp);
+                        $("input[name=article_tmp]").val(data.article_tmp);
+                        $("input[name=index_tmp]").val(data.index_tmp);
+                        $("select[name=model_id]").val(data.model_id);
+                    },'json');
+                } 
+            }
+            $("select[name=pid]").change(function(){
+                changeTmp();
+            });
+
+        });
+
+    </script>
+</body>
+</html>

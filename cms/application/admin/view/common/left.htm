@@ -1,0 +1,295 @@
+ <div class="page-sidebar" id="sidebar">
+                <!-- Page Sidebar Header-->
+                <div class="sidebar-header-wrapper">
+                    <input class="searchinput" type="text">
+                    <i class="searchicon fa fa-search"></i>
+                    <div class="searchhelper">Search Reports, Charts, Emails or Notifications</div>
+                </div>
+                <!-- /Page Sidebar Header -->
+                <!-- Sidebar Menu -->
+                <ul class="nav sidebar-menu">
+                    <!--Dashboard-->
+
+                     <!-- <li {if condition="$con eq 'Conf'"} class="open" {/if}>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-briefcase"></i>
+                            <span class="menu-text">网站配置</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                             <li>
+                                <a href="{:url('conf/conflst')}">
+                                    <span class="menu-text">
+                                        配置管理                                   </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('conf/lst')}">
+                                    <span class="menu-text">
+                                        配置列表                                   </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('conf/add')}">
+                                    <span class="menu-text">
+                                        添加配置                                   </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'Admin'"} class="open" {/if}>
+                        <a href="__ADMIN__/#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-user"></i>
+                            <span class="menu-text">管理员</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('Admin/lst')}">
+                                    <span class="menu-text">
+                                        管理列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'AuthRule'"} class="open" {/if}>
+                        <a href="__ADMIN__/#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-user"></i>
+                            <span class="menu-text">权限管理</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('AuthRule/lst')}">
+                                    <span class="menu-text">
+                                        权限列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('AuthGroup/lst')}">
+                                    <span class="menu-text">
+                                        用户组列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('AuthGroupAccess/lst')}">
+                                    <span class="menu-text">
+                                        权限分配列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'Cate'"} class="open" {/if}>
+                        <a href="__ADMIN__/#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-list-ul"></i>
+                            <span class="menu-text">栏目管理</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('cate/lst')}">
+                                    <span class="menu-text">
+                                        栏目列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('cate/add')}">
+                                    <span class="menu-text">
+                                        添加栏目                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'Archives'"} class="open" {/if}>
+                        <a href="__ADMIN__/#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-file-text"></i>
+                            <span class="menu-text">文档管理</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('Archives/lst')}">
+                                    <span class="menu-text">
+                                        文章列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('cate/lst')}">
+                                    <span class="menu-text">
+                                        添加文章                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'Model'"} class="open" {/if}>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-maxcdn"></i>
+                            <span class="menu-text">模型管理</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('model/lst')}">
+                                    <span class="menu-text">
+                                        管理模型                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('model/add')}">
+                                    <span class="menu-text">
+                                        添加模型                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'ModelField'"} class="open" {/if}>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon fa  fa-stack-exchange"></i>
+                            <span class="menu-text">模型字段管理</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('ModelField/lst')}">
+                                    <span class="menu-text">
+                                        模型字段列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('ModelField/add')}">
+                                    <span class="menu-text">
+                                        添加模型字段                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li {if condition="$con eq 'Note'"} class="open" {/if}>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon fa  fa-stack-exchange"></i>
+                            <span class="menu-text">采集</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('Note/lst')}">
+                                    <span class="menu-text">
+                                        采集列表                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('Note/addListRules')}">
+                                    <span class="menu-text">
+                                        采集                                   </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li  {if condition="$con eq 'Adpos' || $con eq 'Advertisement'"} class="open" {/if}>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon fa  fa-stack-exchange"></i>
+                            <span class="menu-text">广告管理</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{:url('Adpos/lst')}">
+                                    <span class="menu-text">
+                                        广告位管理                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:url('Advertisement/lst')}">
+                                    <span class="menu-text">
+                                        广告管理                                    </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="__ADMIN__/#" class="menu-dropdown">
+                            <i class="menu-icon fa fa-gear"></i>
+                            <span class="menu-text">系统</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="__ADMIN__/admin/document/index.html">
+                                    <span class="menu-text">
+                                        配置                                   </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li> -->
+
+                    {foreach name="menu" item="vo"}
+
+                     <li <?php
+                         $arr=explode('/',$vo['name']);
+                         $pcon=$arr[0];
+                         if($pcon==$con){
+                                 echo "class='active open'";
+                         }
+                     ?>  >
+                        <a href="__ADMIN__/#" class="menu-dropdown">
+                            <i class="menu-icon fa {$vo.icon}"></i>
+                            <span class="menu-text">{$vo.title}</span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            {foreach name="vo['children']" item="vo1"}
+                            <li>
+                                <a href="{:url($vo1.name)}">
+                                    <span class="menu-text">
+                                        {$vo1.title}                                   </span>
+                                    <i class="menu-expand"></i>
+                                </a>
+                                <ul class="submenu">
+                                    {foreach name="vo1['children']" item="vo2"}
+                                    <li>
+                                        <a href="{:url($vo2.name)}">
+                                            <span class="menu-text">
+                                                    {$vo2.title}                            </span>
+                                            <i class="menu-expand"></i>
+                                        </a>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </li>
+                    {/foreach}
+
+
+                </ul>
+                <!-- /Sidebar Menu -->
+            </div>
